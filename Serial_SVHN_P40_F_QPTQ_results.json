@@ -1,0 +1,78 @@
+{
+    "config": {
+        "dataset_args": {
+            "name": "SVHN",
+            "image_size": 32,
+            "num_workers": 2,
+            "num_classes": 10
+        },
+        "model_args": {
+            "cnn_output_channels": 128,
+            "transformer_layers": 2,
+            "transformer_heads": 4,
+            "transformer_dim_feedforward": 256,
+            "use_pos_encoding": true,
+            "transformer_dropout": 0.1,
+            "pos_encoding_learnable": true,
+            "cls_token_init_std": 0.02,
+            "parallel_mlp_hidden_channels": 64,
+            "parallel_mlp_output_channels": 32,
+            "fusion_strategy": "serial"
+        },
+        "training_args": {
+            "batch_size": 128,
+            "base_lr": 0.001,
+            "weight_decay": 0.0001,
+            "initial_train_epochs": 0,
+            "finetune_epochs": 10,
+            "lr_finetune": 0.0001,
+            "optimizer_type_finetune": "adamw",
+            "qat_epochs": 10,
+            "lr_qat": 1e-05,
+            "optimizer_type_qat": "adamw",
+            "lr_scheduler_type": "cosine",
+            "cosine_t_max_factor": 1.0,
+            "step_lr_step_size": 7,
+            "step_lr_gamma": 0.1,
+            "optimizer_type": "adamw",
+            "global_seed": 42
+        },
+        "compression_args": {
+            "pruning_amount": 0.4,
+            "quantization_type": "ptq",
+            "ptq_calib_batches": 20,
+            "quantization_backend": "fbgemm"
+        },
+        "name": "Serial_SVHN_P40_F_QPTQ",
+        "load_fp32_baseline_from_experiment": "Baseline_FP32_Serial_SVHN",
+        "model_save_dir": "e:\\code\\cnn_last\\cnn\\\u4ee3\u7801\\saved_models",
+        "results_dir": "e:\\code\\cnn_last\\cnn\\\u4ee3\u7801\\results",
+        "data_dir": "e:\\code\\cnn_last\\cnn\\\u4ee3\u7801\\data"
+    },
+    "metrics": {
+        "FP32_Loaded_Baseline": {
+            "acc": 94.72956361401353,
+            "loss": 0.1849122276024798,
+            "inf_time_ms": 0.22489682314075707,
+            "size_mb": 1.480626,
+            "gflops": 0.038477312,
+            "params_m": 0.366122
+        },
+        "Pruned": {
+            "acc": 28.756914566687154,
+            "loss": 2.4070512093718093,
+            "inf_time_ms": 0.22041158189921867,
+            "size_mb": 1.480626,
+            "gflops": 0.038477312,
+            "params_m": 0.366122
+        },
+        "Finetuned": {
+            "acc": 93.81530424093424,
+            "loss": 0.2119293721288571,
+            "inf_time_ms": 0.2210049055009431,
+            "size_mb": 1.480626,
+            "gflops": 0.038477312,
+            "params_m": 0.366122
+        }
+    }
+}
